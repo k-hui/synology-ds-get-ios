@@ -47,11 +47,20 @@ class ViewController: UIViewController {
 
     @IBAction func onLogin(sender: UIButton?) {
         // auto cache
-        UserDefaultsUtils.saveAddress(value: txtAddress.text!)
-        UserDefaultsUtils.saveAccount(value: txtAccount.text!)
-        UserDefaultsUtils.savePassword(value: txtPassword.text!)
+        let address = txtAddress.text ?? ""
+        let account = txtAccount.text ?? ""
+        let password = txtPassword.text ?? ""
+        
+        UserDefaultsUtils.saveAddress(value: address)
+        UserDefaultsUtils.saveAccount(value: account)
+        UserDefaultsUtils.savePassword(value: password)
+        
+        guard address != "" else {
+            print("Invalid address")
+            return
+        }
 
-        APIManager.sharedInstance.login(address: txtAddress.text!, account: txtAccount.text!, password: txtPassword.text!) { (isLogged) in
+        APIManager.sharedInstance.login(address: address, account: account, password: password) { (isLogged) in
             print("[ViewController] isLogged = \(isLogged)")
 
             DispatchQueue.main.async {
@@ -72,4 +81,5 @@ class ViewController: UIViewController {
         self.navigationController?.pushViewController(vc, animated: true)
     }
 }
+
 
